@@ -10,7 +10,7 @@ import { Session } from "@supabase/supabase-js";
 import { getFollows } from "../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Auth({ session }: { session: Session | null }) {
+export default function Auth() {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");

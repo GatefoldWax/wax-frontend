@@ -23,11 +23,11 @@ const CurrentUser = () => {
     await supabase.auth.signOut();
     await AsyncStorage.removeItem("username");
     setUser({ username: "", following: [] });
-    router.replace(`/(auth)/`);
+    router.replace(`/`);
   };
 
   useEffect(() => {
-    !user.username && router.push(`/(auth)/`);
+    !user.username && router.push(`/`);
 
     (async () => {
       try {

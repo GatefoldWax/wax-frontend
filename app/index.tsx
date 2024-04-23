@@ -1,19 +1,17 @@
 import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
-import Auth from "../../components/Auth";
+import Auth from "../components/Auth";
 
 import "react-native-url-polyfill/auto";
-import { Session } from "@supabase/supabase-js";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../lib/supabase";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getFollows } from "../../utils/api";
-import { UserContext } from "../../contexts/UserContent";
+import { getFollows } from "../utils/api";
+import { UserContext } from "../contexts/UserContent";
 import { ActivityIndicator } from "react-native";
 
 const Welcome = () => {
-  const [session, setSession] = useState<Session | null>(null);
   const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
@@ -32,19 +30,12 @@ const Welcome = () => {
         try {
           const { following } = await getFollows(username as string);
           setUser({ username, following });
-          setSession(session);
           router.replace("/(auth)/music");
         } catch {
           setLoading(false);
         }
       }
-
-      setSession(session);
     })();
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
   }, []);
 
   return (
@@ -57,7 +48,7 @@ const Welcome = () => {
           className="m-auto"
         />
       ) : (
-        <Auth session={session!} />
+        <Auth />
       )}
     </SafeAreaView>
   );

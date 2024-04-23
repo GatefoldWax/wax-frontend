@@ -8,7 +8,7 @@ NativeWindStyleSheet.setOutput({ default: "native" });
 
 const InitialLayout = () => {
   useEffect(() => {
-    router.replace(`/(auth)/`);
+    router.replace(`/`);
   }, []);
 
   return <Slot />;
