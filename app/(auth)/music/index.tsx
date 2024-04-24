@@ -11,10 +11,10 @@ import { getMusic, getSpotifyMusic } from "../../../utils/api";
 import { Music } from "../../../types/front-end";
 import SearchOptions from "../../../components/SearchOptions";
 import SearchFilterBar from "../../../components/SearchFilterBar";
-import MusicListItem from "../../../components/MusicListItem";
+import MusicList from "../../../components/MusicList";
 import MusicHeader from "../../../components/Header";
 
-const MusicList = () => {
+const HomePage = () => {
   const [music, setMusic] = useState<Music[]>([]);
   const [dropdownVis, setDropdownVis] = useState(false);
   const [isSpotifySearched, setIsSpotifySearched] = useState(false);
@@ -100,19 +100,11 @@ const MusicList = () => {
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
         >
-          <View className="flex flex-row flex-wrap justify-between bg-white min-h-fit pt-2">
-            {searchedUpMusic.length == 0
-              ? music.map((track) => (
-                  <MusicListItem key={track.music_id} track={track} />
-                ))
-              : searchedUpMusic.map((track) => (
-                  <MusicListItem key={track.music_id} track={track} />
-                ))}
-          </View>
+          <MusicList music={searchedUpMusic.length == 0 ? music : searchedUpMusic} />
         </ScrollView>
       )}
     </SafeAreaView>
   );
 };
 
-export default MusicList;
+export default HomePage;
