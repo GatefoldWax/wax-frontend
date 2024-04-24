@@ -7,43 +7,35 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { FC } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { getSpotifyMusic } from "../utils/api";
 import { useState } from "react";
+import { Music } from "../types/front-end";
 
-interface Props {
-  isSearchVis: boolean;
-  setIsSearchVis: Function;
-  typeOfSearch: string;
-  isSpotifySearched: boolean;
-  setIsSpotifySearched: Function;
-  setDropDVis: Function;
-  setSearchedUpMusic: Function;
-  searchText: string;
-  setSearchText: Function;
-}
-
-const MusicTypeSearch: FC<Props> = ({
+const SearchInputBar = ({
   setIsSearchVis,
-  isSearchVis,
   typeOfSearch,
-  isSpotifySearched,
-  setIsSpotifySearched,
   setDropDVis,
   setSearchedUpMusic,
   searchText,
   setSearchText,
+}: {
+  setIsSearchVis: Dispatch<SetStateAction<boolean>>;
+  typeOfSearch: string;
+  setDropDVis: Dispatch<SetStateAction<boolean>>;
+  setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
+  searchText: string;
+  setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchSubmit = async () => {
     if (searchText) {
-      setisLoading(true);
+      setIsLoading(true);
       try {
         const spotifyMusic = await getSpotifyMusic(typeOfSearch, searchText);
         setDropDVis(false);
-        setisLoading(false);
-        setIsSpotifySearched(!isSpotifySearched);
+        setIsLoading(false);
         setSearchedUpMusic(spotifyMusic);
       } catch (err) {
         console.log("🚀 ~ handleSearchSubmit ~ err:", err);
@@ -59,7 +51,7 @@ const MusicTypeSearch: FC<Props> = ({
   return (
     <Pressable
       onPress={() => {
-        setIsSearchVis(!isSearchVis);
+        setIsSearchVis((current: boolean) => !current);
       }}
     >
       <View className=" bg-white flex flex-row items-center justify-items-center">
@@ -68,11 +60,7 @@ const MusicTypeSearch: FC<Props> = ({
           enablesReturnKeyAutomatically={true}
           onSubmitEditing={handleSearchSubmit}
           className="border-2 m-5 p-3 focus:border-[#B56DE4] rounded w-[75%]"
-          placeholder={
-            typeOfSearch === "album"
-              ? "search albums by artist or album name"
-              : "search tracks by artist or track name"
-          }
+          placeholder={`search ${typeOfSearch} by artist or album name`}
           placeholderTextColor="#0008"
           value={searchText}
           onChangeText={(e) => setSearchText(e)}
@@ -93,4 +81,4 @@ const MusicTypeSearch: FC<Props> = ({
     </Pressable>
   );
 };
-export default MusicTypeSearch;
+export default SearchInputBar;

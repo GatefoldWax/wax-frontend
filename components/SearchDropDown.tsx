@@ -1,23 +1,20 @@
 import { FC, useState } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 
-import MusicTypeSearch from "./MusicTypeSearch";
+import SearchInputBar from "./SearchInputBar";
 
 interface Props {
   dropDVis: boolean;
-  setDropDVis: Function;
+  setDropDVis: any;
   isSpotifySearched: boolean;
   setIsSpotifySearched: Function;
-  setSearchedUpMusic: Function;
+  setSearchedUpMusic: any;
   searchText: string;
-  setSearchText: Function;
+  setSearchText: any;
 }
 
 const SearchDropDown: FC<Props> = ({
-  dropDVis,
   setDropDVis,
-  isSpotifySearched,
-  setIsSpotifySearched,
   setSearchedUpMusic,
   searchText,
   setSearchText,
@@ -44,6 +41,7 @@ const SearchDropDown: FC<Props> = ({
         >
           <Text className="py-2 pl-4 pr-8 border-b">Albums</Text>
         </Pressable>
+
         <Pressable
           hitSlop={{ right: 1000 }}
           onPressIn={() => {
@@ -59,16 +57,14 @@ const SearchDropDown: FC<Props> = ({
           <Text className="py-2 pl-4 pr-8 border-b">Tracks</Text>
         </Pressable>
       </View>
+
       {isSearchVis && (
-        <MusicTypeSearch
+        <SearchInputBar
           searchText={searchText}
           setSearchText={setSearchText}
           setSearchedUpMusic={setSearchedUpMusic}
           setDropDVis={setDropDVis}
-          isSpotifySearched={isSpotifySearched}
-          setIsSpotifySearched={setIsSpotifySearched}
           setIsSearchVis={setIsSearchVis}
-          isSearchVis={isSearchVis}
           typeOfSearch={typeOfSearch}
         />
       )}

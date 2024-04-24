@@ -1,25 +1,26 @@
 import { View, Text, Pressable } from "react-native";
-import { FC } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { Music } from "../types/front-end";
 
-interface Props {
+const SearchFilterBar = ({
+  searchText,
+  setSearchedUpMusic,
+}: {
   searchText: string;
-  setIsSpotifySearched: Function;
-}
-View;
-const SearchFilterBar: FC<Props> = ({ searchText, setIsSpotifySearched }) => {
+  setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
+}) => {
   return (
     <View className=" h-[4%] w-[100%] flex-row items-center">
-        <Text className="ml-8 text-lg">Search results for {searchText}</Text>
+      <Text className="ml-8 text-lg">Search results for {searchText}</Text>
       <Pressable
         onPress={() => {
-          setIsSpotifySearched(false)
-          router.setParams({artistName:''})
+          setSearchedUpMusic([]);
+          router.setParams({ artistName: "" });
         }}
         className=" ml-auto mr-8"
       >
-
         <AntDesign name="close" size={30} color="black" />
       </Pressable>
     </View>
