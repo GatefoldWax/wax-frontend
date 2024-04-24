@@ -9,8 +9,8 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain",
+      "backgroundColor": "##b56de4"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "##b56de4"
       },
       "package": "com.hudaifdaif.WaxReactNative"
     },
