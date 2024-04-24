@@ -17,7 +17,6 @@ import MusicHeader from "../../../components/MusicHeader";
 const HomePage = () => {
   const [music, setMusic] = useState<Music[]>([]);
   const [dropdownVis, setDropdownVis] = useState(false);
-  const [isSpotifySearched, setIsSpotifySearched] = useState(false);
   const [searchedUpMusic, setSearchedUpMusic] = useState<Music[]>([]);
   const [searchText, setSearchText] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
