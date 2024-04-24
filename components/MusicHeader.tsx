@@ -5,11 +5,9 @@ import { TouchableWithoutFeedback, View, Pressable, Image } from "react-native";
 
 const MusicHeader = ({
   setDropdownVis,
-  setIsSpotifySearched,
   setSearchText,
 }: {
   setDropdownVis: Dispatch<SetStateAction<boolean>>;
-  setIsSpotifySearched: Dispatch<SetStateAction<boolean>>;
   setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
   const [buttonColor, setButtonColor] = useState({ search: "", user: "" });
@@ -26,7 +24,6 @@ const MusicHeader = ({
           onPressIn={() => {
             setButtonColor({ ...buttonColor, search: "bg-[#9058B5]" });
             setDropdownVis((current) => !current);
-            setIsSpotifySearched(false);
             setSearchText("");
           }}
           onPressOut={() => {
