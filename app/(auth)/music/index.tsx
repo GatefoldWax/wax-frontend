@@ -9,7 +9,7 @@ import { router, useGlobalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { getMusic, getSpotifyMusic } from "../../../utils/api";
 import { Music } from "../../../types/front-end";
-import SearchDropDown from "../../../components/SearchDropDown";
+import SearchOptions from "../../../components/SearchOptions";
 import SearchFilterBar from "../../../components/SearchFilterBar";
 import MusicListItem from "../../../components/MusicListItem";
 import MusicHeader from "../../../components/Header";
@@ -72,14 +72,10 @@ const MusicList = () => {
       />
 
       {dropdownVis && (
-        <SearchDropDown
+        <SearchOptions
           searchText={searchText}
           setSearchText={setSearchText}
           setSearchedUpMusic={setSearchedUpMusic}
-          dropDVis={dropdownVis}
-          setDropDVis={setDropdownVis}
-          setIsSpotifySearched={setIsSpotifySearched}
-          isSpotifySearched={isSpotifySearched}
         />
       )}
 

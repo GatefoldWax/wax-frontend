@@ -1,23 +1,17 @@
-import { FC, useState } from "react";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
 import SearchInputBar from "./SearchInputBar";
+import { Music } from "../types/front-end";
 
-interface Props {
-  dropDVis: boolean;
-  setDropDVis: any;
-  isSpotifySearched: boolean;
-  setIsSpotifySearched: Function;
-  setSearchedUpMusic: any;
-  searchText: string;
-  setSearchText: any;
-}
-
-const SearchDropDown: FC<Props> = ({
-  setDropDVis,
+const SearchOptions = ({
   setSearchedUpMusic,
   searchText,
   setSearchText,
+}: {
+  setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
+  searchText: string;
+  setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
   const [isSearchVis, setIsSearchVis] = useState(false);
   const [typeOfSearch, setTypeOfSearch] = useState("");
@@ -63,7 +57,6 @@ const SearchDropDown: FC<Props> = ({
           searchText={searchText}
           setSearchText={setSearchText}
           setSearchedUpMusic={setSearchedUpMusic}
-          setDropDVis={setDropDVis}
           setIsSearchVis={setIsSearchVis}
           typeOfSearch={typeOfSearch}
         />
@@ -71,4 +64,5 @@ const SearchDropDown: FC<Props> = ({
     </View>
   );
 };
-export default SearchDropDown;
+
+export default SearchOptions;

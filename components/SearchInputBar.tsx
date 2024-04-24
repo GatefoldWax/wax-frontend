@@ -15,14 +15,12 @@ import { Music } from "../types/front-end";
 const SearchInputBar = ({
   setIsSearchVis,
   typeOfSearch,
-  setDropDVis,
   setSearchedUpMusic,
   searchText,
   setSearchText,
 }: {
   setIsSearchVis: Dispatch<SetStateAction<boolean>>;
   typeOfSearch: string;
-  setDropDVis: Dispatch<SetStateAction<boolean>>;
   setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
@@ -34,7 +32,6 @@ const SearchInputBar = ({
       setIsLoading(true);
       try {
         const spotifyMusic = await getSpotifyMusic(typeOfSearch, searchText);
-        setDropDVis(false);
         setIsLoading(false);
         setSearchedUpMusic(spotifyMusic);
       } catch (err) {
@@ -81,4 +78,5 @@ const SearchInputBar = ({
     </Pressable>
   );
 };
+
 export default SearchInputBar;
