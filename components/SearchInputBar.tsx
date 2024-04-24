@@ -18,12 +18,14 @@ const SearchInputBar = ({
   setSearchedUpMusic,
   searchText,
   setSearchText,
+  setDropdownVis,
 }: {
   setIsSearchVis: Dispatch<SetStateAction<boolean>>;
   typeOfSearch: string;
   setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
+  setDropdownVis: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +36,7 @@ const SearchInputBar = ({
         const spotifyMusic = await getSpotifyMusic(typeOfSearch, searchText);
         setIsLoading(false);
         setSearchedUpMusic(spotifyMusic);
+        setDropdownVis((current) => !current);
       } catch (err) {
         console.log("🚀 ~ handleSearchSubmit ~ err:", err);
       } finally {

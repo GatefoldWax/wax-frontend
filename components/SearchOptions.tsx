@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-
 import SearchInputBar from "./SearchInputBar";
 import { Music } from "../types/front-end";
 
@@ -8,10 +7,12 @@ const SearchOptions = ({
   setSearchedUpMusic,
   searchText,
   setSearchText,
+  setDropdownVis,
 }: {
   setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
+  setDropdownVis: Dispatch<SetStateAction<boolean>>
 }) => {
   const [isSearchVis, setIsSearchVis] = useState(false);
   const [typeOfSearch, setTypeOfSearch] = useState("");
@@ -59,6 +60,7 @@ const SearchOptions = ({
           setSearchedUpMusic={setSearchedUpMusic}
           setIsSearchVis={setIsSearchVis}
           typeOfSearch={typeOfSearch}
+          setDropdownVis={setDropdownVis}
         />
       )}
     </View>

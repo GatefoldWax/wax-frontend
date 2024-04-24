@@ -76,6 +76,7 @@ const HomePage = () => {
           searchText={searchText}
           setSearchText={setSearchText}
           setSearchedUpMusic={setSearchedUpMusic}
+          setDropdownVis={setDropdownVis}
         />
       )}
 
@@ -100,7 +101,9 @@ const HomePage = () => {
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
         >
-          <MusicList music={searchedUpMusic.length == 0 ? music : searchedUpMusic} />
+          <MusicList
+            music={searchedUpMusic.length == 0 ? music : searchedUpMusic}
+          />
         </ScrollView>
       )}
     </SafeAreaView>
