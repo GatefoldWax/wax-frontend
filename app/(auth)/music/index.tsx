@@ -6,13 +6,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useGlobalSearchParams } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getMusic, getSpotifyMusic } from "../../../utils/api";
 import { Music } from "../../../types/front-end";
 import SearchOptions from "../../../components/SearchOptions";
 import SearchFilterBar from "../../../components/SearchFilterBar";
 import MusicList from "../../../components/MusicList";
-import MusicHeader from "../../../components/Header";
+import MusicHeader from "../../../components/MusicHeader";
 
 const HomePage = () => {
   const [music, setMusic] = useState<Music[]>([]);
@@ -22,15 +22,6 @@ const HomePage = () => {
   const [searchText, setSearchText] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setIsRefreshing(true);
-    setTimeout(async () => {
-      const musicData = await getMusic();
-      setMusic(musicData);
-      setIsRefreshing(false);
-    }, 2000);
-  }, []);
 
   const params = useGlobalSearchParams();
 
@@ -46,6 +37,25 @@ const HomePage = () => {
     })();
   }, [params]);
 
+  const scrollPosRef = useRef<any>();
+
+  const scrollToTop = () => {
+    scrollPosRef.current.scrollTo({
+      x: 0,
+      y: 0,
+      animated: true,
+    });
+  };
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(async () => {
+      const musicData = await getMusic();
+      setMusic(musicData);
+      setIsRefreshing(false);
+    }, 2000);
+  }, []);
+
   const handleSearchSubmit = async (artistName: string) => {
     setIsLoading(true);
     try {
@@ -53,7 +63,6 @@ const HomePage = () => {
       setSearchText(artistName);
       setDropdownVis(false);
       setIsLoading(false);
-      setIsSpotifySearched(true);
       setSearchedUpMusic(spotifyMusic);
     } catch (err) {
       router.setParams({});
@@ -67,7 +76,6 @@ const HomePage = () => {
     <SafeAreaView className="h-[100%]">
       <MusicHeader
         setDropdownVis={setDropdownVis}
-        setIsSpotifySearched={setIsSpotifySearched}
         setSearchText={setSearchText}
       />
 
@@ -100,6 +108,8 @@ const HomePage = () => {
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
+          ref={scrollPosRef}
+          onContentSizeChange={scrollToTop}
         >
           <MusicList
             music={searchedUpMusic.length == 0 ? music : searchedUpMusic}
