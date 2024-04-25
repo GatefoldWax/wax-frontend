@@ -11,7 +11,7 @@ interface UserContext {
   setUser: Dispatch<
     SetStateAction<{
       username: string;
-      following: never[];
+      following: string[];
     }>
   >;
 }
@@ -19,7 +19,10 @@ interface UserContext {
 export const UserContext = createContext<UserContext>({} as UserContext);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState({ username: "", following: [] });
+  const [user, setUser] = useState<{ username: string; following: string[] }>({
+    username: "",
+    following: [],
+  });
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
