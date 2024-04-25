@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useContext } from "react";
 import { TouchableWithoutFeedback, View, Pressable, Image } from "react-native";
+import { UserContext } from "../contexts/UserContent";
+import SignOutButton from "./reusable-components/SignOutButton";
 
 const MusicHeader = ({
   setDropdownVis,
@@ -11,6 +13,7 @@ const MusicHeader = ({
   setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
   const [buttonColor, setButtonColor] = useState({ search: "", user: "" });
+  const { user } = useContext(UserContext);
 
   return (
     <TouchableWithoutFeedback
@@ -44,23 +47,27 @@ const MusicHeader = ({
           resizeMode="center"
         />
 
-        <Pressable
-          onPressIn={() => {
-            setButtonColor({ ...buttonColor, user: "bg-[#9058B5]" });
-          }}
-          onPressOut={() => {
-            setButtonColor({ ...buttonColor, user: "" });
-            router.push(`/(auth)/users`);
-          }}
-          className={`items-center mx-6 p-2 ${buttonColor.user} rounded-md`}
-        >
-          <Ionicons
-            name="person-outline"
-            size={30}
-            color="black"
-            className="m-4"
-          />
-        </Pressable>
+        {user.username !== "" ? (
+          <Pressable
+            onPressIn={() => {
+              setButtonColor({ ...buttonColor, user: "bg-[#9058B5]" });
+            }}
+            onPressOut={() => {
+              setButtonColor({ ...buttonColor, user: "" });
+              router.push(`/(auth)/users`);
+            }}
+            className={`items-center mx-6 p-2 ${buttonColor.user} rounded-md`}
+          >
+            <Ionicons
+              name="person-outline"
+              size={30}
+              color="black"
+              className="m-4"
+            />
+          </Pressable>
+        ) : (
+          <SignOutButton />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
