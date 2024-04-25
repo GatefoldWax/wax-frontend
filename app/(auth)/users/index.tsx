@@ -1,34 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  SafeAreaView,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, SafeAreaView, Text, View } from "react-native";
 import { UserContext } from "../../../contexts/UserContent";
-import { supabase } from "../../../lib/supabase";
-import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getReviewsByUsername } from "../../../utils/api";
 import ReviewHistory from "../../../components/ReviewHistory";
 import UserList from "../../../components/UserList";
+import SignOutButton from "../../../components/reusable-components/SignOutButton";
 
 const CurrentUser = () => {
   const [loading, setLoading] = useState(true);
   const { user, setUser } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    await AsyncStorage.removeItem("username");
-    setUser({ username: "", following: [] });
-    router.replace(`/`);
-  };
-
   useEffect(() => {
-    !user.username && router.push(`/`);
-
     (async () => {
       try {
         const userReviews = await getReviewsByUsername(user.username);
@@ -54,12 +37,7 @@ const CurrentUser = () => {
           Hello {user.username}!
         </Text>
 
-        <Pressable
-          onPress={handleSignOut}
-          className="bg-black w-auto m-4 p-2 flex-row rounded-xl border-x border-b border-stone-500"
-        >
-          <Text className="text-white text-lg w-auto m-auto">Sign Out</Text>
-        </Pressable>
+        <SignOutButton setUser={setUser} />
       </View>
 
       <View>
