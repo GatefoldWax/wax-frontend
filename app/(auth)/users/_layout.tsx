@@ -3,9 +3,9 @@ import { Stack } from "expo-router";
 export default () => {
   return (
     <Stack>
-        <Stack.Screen
+      <Stack.Screen
         name="index"
-        options={{ headerShown: true, title: "Back to Feed" }}
+        options={{ headerShown: true, title: "Back" }}
       />
       <Stack.Screen
         name="[username]/index"
