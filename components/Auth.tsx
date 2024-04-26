@@ -77,10 +77,7 @@ export default function Auth() {
 
   const handleGuestLogin = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: "guest@wax.io",
-      password: "Guest",
-    });
+    const { error } = await supabase.auth.signInAnonymously();
 
     if (error) {
       Alert.alert(error.message);
@@ -113,6 +110,7 @@ export default function Auth() {
             autoCapitalize={"none"}
           />
         </View>
+
         {isSigningUp && (
           <View className="mx-[2%]">
             <Input
@@ -128,6 +126,7 @@ export default function Auth() {
             />
           </View>
         )}
+
         <View className="mx-[2%]">
           <Input
             inputContainerStyle={{ borderColor: "black" }}
