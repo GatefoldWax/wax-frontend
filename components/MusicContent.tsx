@@ -1,21 +1,21 @@
 import { Text, View, Image, Pressable } from "react-native";
 import { Music, Track } from "../types/front-end";
-import React, { EffectCallback, useEffect, useState } from "react";
-import { Navigator, useGlobalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { useGlobalSearchParams } from "expo-router";
 import { getMusic, getSpotifyTrackList } from "../utils/api";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { router } from "expo-router";
 
-const AlbumPage = () => {
+const MusicContent = () => {
   const { music_id } = useGlobalSearchParams();
   const [musicContent, setMusicContent] = useState<Music>();
   const [ratingColor, setRatingColor] = useState("text-green-800");
   const [isPlaying, setIsPlaying] = useState(false);
   const [playableMedia, setPlayableMedia] = useState<Audio.Sound | undefined>();
   const [isAlbumFlipped, setIsAlbumFlipped] = useState(false);
-  const [tracks, setTracks] = useState<Track[] | []>([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -77,7 +77,7 @@ const AlbumPage = () => {
   };
 
   return (
-    <View className="bg-[#faf6ff] flex justify-center items-center">
+    <View className="flex justify-center items-center">
       <Text className="text-center  text-xl font-bold my-3 ">
         {musicContent?.name}
       </Text>
@@ -100,13 +100,13 @@ const AlbumPage = () => {
       </View>
 
       {isAlbumFlipped ? (
-        <ScrollView className="h-[350] w-[350] rounded-md">
+        <ScrollView className="h-[350] w-[350] bg-slate-500 p-2 rounded-md album-cover">
           {tracks && tracks?.length
             ? tracks.map((track) => {
                 return (
                   <Text
                     key={track.id}
-                    className="py-2"
+                    className="py-2 text-white"
                   >{`${track.track_number}: ${track.name}`}</Text>
                 );
               })
@@ -169,4 +169,4 @@ const AlbumPage = () => {
   );
 };
 
-export default AlbumPage;
+export default MusicContent;

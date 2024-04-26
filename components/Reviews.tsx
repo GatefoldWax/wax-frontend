@@ -6,7 +6,7 @@ import { Review } from "../types/front-end";
 import ReviewModal from "./ReviewModal";
 import { UserContext } from "../contexts/UserContent";
 
-import SingleReview from "./SingleReview";
+import ReviewItem from "./ReviewItem";
 
 export const Reviews = () => {
   const { music_id } = useGlobalSearchParams();
@@ -19,17 +19,20 @@ export const Reviews = () => {
 
   useEffect(() => {
     (async () => {
-      const reviewData = await getReviews(music_id as string, user.username || "guest");
+      const reviewData = await getReviews(
+        music_id as string,
+        user.username || "guest"
+      );
       setReviews(reviewData);
     })();
-  }, [ isReviewable]);
+  }, [isReviewable]);
 
   return (
     <>
       {reviews?.userReview ? (
         <View>
           <Text className="mt-10 text-center font-bold text-lg">My Review</Text>
-          <SingleReview
+          <ReviewItem
             review={reviews?.userReview}
             setIsReviewable={setIsReviewable}
           />
@@ -45,7 +48,7 @@ export const Reviews = () => {
         {reviews?.globalReviews.length ? (
           reviews?.globalReviews.map((review: Review) => {
             return (
-              <SingleReview
+              <ReviewItem
                 key={review.review_id}
                 review={review}
                 setIsReviewable={setIsReviewable}

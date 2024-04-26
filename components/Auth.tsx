@@ -6,11 +6,10 @@ import { router } from "expo-router";
 import { FormButton } from "./reusable-components/FormButton";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContent";
-import { Session } from "@supabase/supabase-js";
 import { getFollows } from "../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Auth({ session }: { session: Session | null }) {
+export default function Auth() {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -90,7 +89,7 @@ export default function Auth({ session }: { session: Session | null }) {
       router.replace("/(auth)/music");
       setLoading(false);
     }
-  }
+  };
 
   return (
     <View className="h-full">
@@ -144,6 +143,7 @@ export default function Auth({ session }: { session: Session | null }) {
           />
         </View>
       </TouchableWithoutFeedback>
+
       {!isSigningUp && (
         <>
           <View className="mx-auto my-4">

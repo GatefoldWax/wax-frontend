@@ -1,25 +1,35 @@
-import { router, Slot } from "expo-router";
-import { useEffect } from "react";
-
+import { Slot, Stack } from "expo-router";
 import { NativeWindStyleSheet } from "nativewind";
-import { UserProvider } from "../contexts/UserContent";
+import { UserContext, UserProvider } from "../contexts/UserContent";
+import { useContext, useEffect, useState } from "react";
 
 NativeWindStyleSheet.setOutput({ default: "native" });
 
-const InitialLayout = () => {
-  useEffect(() => {
-    router.replace(`/(auth)/`);
-  }, []);
+const RootLayout = () => {
+  const { user } = useContext(UserContext);
+  const [route, setRoute] = useState<any>();
 
-  return <Slot />;
+  useEffect(() => {
+    setRoute(
+      user.username !== "" ? (
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)/music" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)/users" options={{ headerShown: false }} />
+        </Stack>
+      ) : (
+        <Slot />
+      )
+    );
+  }, [user]);
+
+  return route;
 };
 
-const RootLayout = () => {
+export default () => {
   return (
     <UserProvider>
-      <InitialLayout  />
+      <RootLayout />
     </UserProvider>
   );
 };
-
-export default RootLayout;

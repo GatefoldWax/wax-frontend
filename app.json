@@ -9,8 +9,8 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "##b56de4"
+      "resizeMode": "cover",
+      "backgroundColor": "#b56de4"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,9 +22,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "##b56de4"
-      },
-      "package": "com.hudaifdaif.WaxReactNative"
+        "backgroundColor": "#b56de4"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -40,14 +39,15 @@
     "extra": {
       "router": {
         "origin": false
+      },
+      "eas": {
+        "projectId": "a10a7962-4e0e-4003-9e0a-d2b034d372b2"
       }
-
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-      "url": "https://u.expo.dev/454274de-9c57-491e-ab24-c32aad1500a4"
-    }
+    "updates": {},
+    "owner": "gatefoldwax"
   }
 }

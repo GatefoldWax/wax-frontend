@@ -6,12 +6,17 @@ import { UserContext } from "../contexts/UserContent";
 import { useContext, useState } from "react";
 import { deleteReview } from "../utils/api";
 
-const SingleReview = ({ review, setIsReviewable }: { review: Review,setIsReviewable: Function }) => {
+const ReviewItem = ({
+  review,
+  setIsReviewable,
+}: {
+  review: Review;
+  setIsReviewable: Function;
+}) => {
   const { user } = useContext(UserContext);
-  
 
   const handleDelete = async (review_id: number) => {
-    setIsReviewable((current: Boolean)=>!current)
+    setIsReviewable((current: Boolean) => !current);
     await deleteReview(review_id);
   };
 
@@ -42,4 +47,4 @@ const SingleReview = ({ review, setIsReviewable }: { review: Review,setIsReviewa
   );
 };
 
-export default SingleReview;
+export default ReviewItem;

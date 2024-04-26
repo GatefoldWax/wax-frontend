@@ -1,26 +1,18 @@
-import { FC, useState } from "react";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Pressable, Text, View } from "react-native";
+import SearchInputBar from "./SearchInputBar";
+import { Music } from "../types/front-end";
 
-import MusicTypeSearch from "./MusicTypeSearch";
-
-interface Props {
-  dropDVis: boolean;
-  setDropDVis: Function;
-  isSpotifySearched: boolean;
-  setIsSpotifySearched: Function;
-  setSearchedUpMusic: Function;
-  searchText: string;
-  setSearchText: Function;
-}
-
-const SearchDropDown: FC<Props> = ({
-  dropDVis,
-  setDropDVis,
-  isSpotifySearched,
-  setIsSpotifySearched,
+const SearchOptions = ({
   setSearchedUpMusic,
   searchText,
   setSearchText,
+  setDropdownVis,
+}: {
+  setSearchedUpMusic: Dispatch<SetStateAction<Music[]>>;
+  searchText: string;
+  setSearchText: Dispatch<SetStateAction<string>>;
+  setDropdownVis: Dispatch<SetStateAction<boolean>>
 }) => {
   const [isSearchVis, setIsSearchVis] = useState(false);
   const [typeOfSearch, setTypeOfSearch] = useState("");
@@ -44,6 +36,7 @@ const SearchDropDown: FC<Props> = ({
         >
           <Text className="py-2 pl-4 pr-8 border-b">Albums</Text>
         </Pressable>
+
         <Pressable
           hitSlop={{ right: 1000 }}
           onPressIn={() => {
@@ -59,20 +52,19 @@ const SearchDropDown: FC<Props> = ({
           <Text className="py-2 pl-4 pr-8 border-b">Tracks</Text>
         </Pressable>
       </View>
+
       {isSearchVis && (
-        <MusicTypeSearch
+        <SearchInputBar
           searchText={searchText}
           setSearchText={setSearchText}
           setSearchedUpMusic={setSearchedUpMusic}
-          setDropDVis={setDropDVis}
-          isSpotifySearched={isSpotifySearched}
-          setIsSpotifySearched={setIsSpotifySearched}
           setIsSearchVis={setIsSearchVis}
-          isSearchVis={isSearchVis}
           typeOfSearch={typeOfSearch}
+          setDropdownVis={setDropdownVis}
         />
       )}
     </View>
   );
 };
-export default SearchDropDown;
+
+export default SearchOptions;
