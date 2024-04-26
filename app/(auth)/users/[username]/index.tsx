@@ -1,20 +1,15 @@
-import {
-  Pressable,
-  Text,
-  View,
-  ActivityIndicator,
-  SafeAreaView,
-} from "react-native";
-import { useContext, useEffect, useState } from "react";
 import { router, useGlobalSearchParams } from "expo-router";
+import { useContext, useEffect, useState } from "react";
+import { Pressable, SafeAreaView, Text, View } from "react-native";
+import ReviewHistory from "../../../../components/ReviewHistory";
+import UserList from "../../../../components/UserList";
+import LoadingSpinner from "../../../../components/reusable-components/LoadingSpinner";
+import { UserContext } from "../../../../contexts/UserContent";
 import {
   getFollows,
   getReviewsByUsername,
   patchFollows,
 } from "../../../../utils/api";
-import { UserContext } from "../../../../contexts/UserContent";
-import ReviewHistory from "../../../../components/ReviewHistory";
-import UserList from "../../../../components/UserList";
 
 const UserPage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -60,12 +55,7 @@ const UserPage = () => {
   }, [username, user]);
 
   return loading ? (
-    <ActivityIndicator
-      size="large"
-      style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
-      color="#B56DE4"
-      className="m-auto"
-    />
+    <LoadingSpinner size="large" isColour={true} />
   ) : (
     <SafeAreaView className="h-[100%] bg-[#faf6ff]">
       <View className="flex flex-row justify-between">

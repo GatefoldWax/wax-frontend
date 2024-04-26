@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, SafeAreaView, Text, View } from "react-native";
-import { UserContext } from "../../../contexts/UserContent";
-import { getReviewsByUsername } from "../../../utils/api";
+import { SafeAreaView, Text, View } from "react-native";
 import ReviewHistory from "../../../components/ReviewHistory";
 import UserList from "../../../components/UserList";
+import LoadingSpinner from "../../../components/reusable-components/LoadingSpinner";
 import SignOutButton from "../../../components/reusable-components/SignOutButton";
+import { UserContext } from "../../../contexts/UserContent";
+import { getReviewsByUsername } from "../../../utils/api";
 
 const CurrentUser = () => {
   const [loading, setLoading] = useState(true);
@@ -24,12 +25,7 @@ const CurrentUser = () => {
   }, []);
 
   return loading ? (
-    <ActivityIndicator
-      size="large"
-      style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
-      color="#B56DE4"
-      className="m-auto"
-    />
+    <LoadingSpinner size="large" isColour={true} />
   ) : (
     <SafeAreaView className="h-[100%]">
       <View className="flex flex-row justify-between">
