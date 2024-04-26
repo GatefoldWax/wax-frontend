@@ -1,16 +1,9 @@
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Dispatch, SetStateAction } from "react";
-import { getSpotifyMusic } from "../utils/api";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { Music } from "../types/front-end";
+import { getSpotifyMusic } from "../utils/api";
+import LoadingSpinner from "./reusable-components/LoadingSpinner";
 
 const SearchInputBar = ({
   setIsSearchVis,
@@ -71,7 +64,7 @@ const SearchInputBar = ({
         >
           <Text>
             {isLoading ? (
-              <ActivityIndicator size="small" color="#ffffff" />
+              <LoadingSpinner size="small" isColour={false} />
             ) : (
               <Ionicons name="search-outline" size={24} color="white" />
             )}

@@ -1,18 +1,14 @@
-import {
-  ActivityIndicator,
-  ScrollView,
-  View,
-  RefreshControl,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getMusic, getSpotifyMusic } from "../../../utils/api";
-import { Music } from "../../../types/front-end";
-import SearchOptions from "../../../components/SearchOptions";
-import SearchFilterBar from "../../../components/SearchFilterBar";
-import MusicList from "../../../components/MusicList";
+import { RefreshControl, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import MusicHeader from "../../../components/MusicHeader";
+import MusicList from "../../../components/MusicList";
+import SearchFilterBar from "../../../components/SearchFilterBar";
+import SearchOptions from "../../../components/SearchOptions";
+import LoadingSpinner from "../../../components/reusable-components/LoadingSpinner";
+import { Music } from "../../../types/front-end";
+import { getMusic, getSpotifyMusic } from "../../../utils/api";
 
 const HomePage = () => {
   const [music, setMusic] = useState<Music[]>([]);
@@ -46,13 +42,11 @@ const HomePage = () => {
     });
   };
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setIsRefreshing(true);
-    setTimeout(async () => {
-      const musicData = await getMusic();
-      setMusic(musicData);
-      setIsRefreshing(false);
-    }, 2000);
+    const musicData = await getMusic();
+    setMusic(musicData);
+    setIsRefreshing(false);
   }, []);
 
   const handleSearchSubmit = async (artistName: string) => {
@@ -94,27 +88,21 @@ const HomePage = () => {
         />
       )}
 
-      {isLoading ? (
-        <View className="mt-[100%]">
-          <ActivityIndicator
-            size="large"
-            style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
-            color="#B56DE4"
-          />
-        </View>
-      ) : (
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-          ref={scrollPosRef}
-          onContentSizeChange={scrollToTop}
-        >
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+        ref={scrollPosRef}
+        onContentSizeChange={scrollToTop}
+      >
+        {isLoading || isRefreshing ? (
+          <LoadingSpinner size="large" isColour={true} />
+        ) : (
           <MusicList
             music={searchedUpMusic.length == 0 ? music : searchedUpMusic}
           />
-        </ScrollView>
-      )}
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
