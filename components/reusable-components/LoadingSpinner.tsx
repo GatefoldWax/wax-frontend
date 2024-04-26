@@ -1,16 +1,21 @@
 import { ActivityIndicator, View } from "react-native";
 
-const LoadingSpinner = () => {
-    return (
-      <View className="my-[100%]">
-        <ActivityIndicator
-          size="large"
-          style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
-          color="#B56DE4"
-          className="m-auto"
-        />
-      </View>
-    );
+interface LoadingSpinnerConfig {
+  size: "small" | "large";
+  isColour: boolean;
 }
- 
+
+const LoadingSpinner = ({ size, isColour }: LoadingSpinnerConfig) => {
+  return (
+    <View className="my-[100%]">
+      <ActivityIndicator
+        size={size}
+        style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
+        color={isColour ? "#B56DE4" : "#FFFFFF"}
+        className="m-auto"
+      />
+    </View>
+  );
+};
+
 export default LoadingSpinner;
