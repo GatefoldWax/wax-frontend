@@ -7,8 +7,15 @@ import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { router } from "expo-router";
+import LoadingSpinner from "./reusable-components/LoadingSpinner";
 
-const MusicContent = () => {
+const MusicContent = ({
+  loading,
+  setLoading,
+}: {
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { music_id } = useGlobalSearchParams();
   const [musicContent, setMusicContent] = useState<Music>();
   const [ratingColor, setRatingColor] = useState("text-green-800");
@@ -36,7 +43,9 @@ const MusicContent = () => {
       } else if (score <= 4) {
         setRatingColor("text-red-700");
       }
+      setLoading((current) => !current);
     })();
+
   }, []);
 
   useEffect((): any => {
@@ -67,6 +76,7 @@ const MusicContent = () => {
     ) {
       await playableMedia.unloadAsync();
     }
+
     setIsPlaying((current) => {
       return !current;
     });
@@ -76,7 +86,9 @@ const MusicContent = () => {
     router.push({ pathname: `/(auth)/music`, params: { artistName } });
   };
 
-  return (
+  return loading ? (
+    <LoadingSpinner size="large" isColour={true} />
+  ) : (
     <View className="flex justify-center items-center">
       <Text className="text-center  text-xl font-bold my-3 ">
         {musicContent?.name}
