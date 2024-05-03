@@ -8,6 +8,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { UserContext } from "../contexts/UserContent";
 import { getFollows } from "../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -175,13 +176,15 @@ export default function Auth() {
 
       {isSigningUp && (
         <>
-          <View className="m-auto mt-4">
+          <PrivacyPolicy loading={loading} signUpWithEmail={signUpWithEmail} />
+
+          {/* <View className="m-auto mt-4">
             <FormButton
               text="Sign up"
               disabled={loading}
               onPress={() => signUpWithEmail()}
             />
-          </View>
+          </View> */}
 
           <View className="m-auto mt-4">
             <FormButton

@@ -4,7 +4,13 @@ import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 import { getPrivacyPolicy } from "../utils/api";
 
-const PrivacyPolicy = () => {
+const PrivacyPolicy = ({
+  loading,
+  signUpWithEmail,
+}: {
+  loading: boolean;
+  signUpWithEmail: Function;
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [policyBody, setPolicyBody] = useState("");
 
@@ -14,10 +20,8 @@ const PrivacyPolicy = () => {
     })();
   }, []);
 
-  const handleAccept = () => {};
-
   return (
-    <View className="bg-[#faf6ff]">
+    <View className="bg-[#B56DE4]">
       <Modal
         animationType="slide"
         transparent={true}
@@ -45,7 +49,8 @@ const PrivacyPolicy = () => {
             </ScrollView>
 
             <Pressable
-              onPress={handleAccept}
+              onPress={() => signUpWithEmail()}
+              disabled={loading}
               className="bg-[#ffffffc0] w-40 p-4 mt-3 rounded-md mx-auto"
             >
               <Text className="text-center">Accept and continue</Text>
@@ -54,10 +59,12 @@ const PrivacyPolicy = () => {
         </View>
       </Modal>
       <Pressable
-        className="bg-[#bd91fcc0] mx-auto mt-5 p-3 rounded-md"
+        className="bg-black mx-auto py-3 px-6 rounded-xl border-x border-b border-stone-500"
         onPress={() => setModalVisible(true)}
       >
-        <Text className="text-center  ">View privacy policy</Text>
+        <Text className="text-center text-white text-2xl w-auto mx-auto">
+          Sign up
+        </Text>
       </Pressable>
     </View>
   );
