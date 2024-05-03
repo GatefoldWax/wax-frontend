@@ -16,6 +16,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSigningUp, setIsSingingUp] = useState(false);
+
   const { setUser } = useContext(UserContext);
 
   async function signInWithEmail() {
@@ -44,6 +45,12 @@ export default function Auth() {
       .from("users")
       .select("username")
       .eq("username", userName);
+
+    if (userName === "" || email === "" || password === "") {
+      setLoading(false);
+      Alert.alert("Please fill in all fields");
+      return undefined;
+    }
 
     if (data?.length) {
       setLoading(false);
@@ -109,6 +116,7 @@ export default function Auth() {
             placeholder="email@address.com"
             placeholderTextColor={"black"}
             autoCapitalize={"none"}
+            keyboardType="email-address"
           />
         </View>
 
@@ -177,14 +185,6 @@ export default function Auth() {
       {isSigningUp && (
         <>
           <PrivacyPolicy loading={loading} signUpWithEmail={signUpWithEmail} />
-
-          {/* <View className="m-auto mt-4">
-            <FormButton
-              text="Sign up"
-              disabled={loading}
-              onPress={() => signUpWithEmail()}
-            />
-          </View> */}
 
           <View className="m-auto mt-4">
             <FormButton

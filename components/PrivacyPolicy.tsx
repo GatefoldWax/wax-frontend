@@ -49,7 +49,7 @@ const PrivacyPolicy = ({
             </ScrollView>
 
             <Pressable
-              onPress={() => signUpWithEmail()}
+              onPress={() => signUpWithEmail() && setModalVisible(false)}
               disabled={loading}
               className="bg-[#ffffffc0] w-40 p-4 mt-3 rounded-md mx-auto"
             >
@@ -59,11 +59,11 @@ const PrivacyPolicy = ({
         </View>
       </Modal>
       <Pressable
-        className="bg-black mx-auto py-3 px-6 rounded-xl border-x border-b border-stone-500"
+        className="bg-black mx-auto my-8 py-2 px-6 rounded-xl border-x border-b border-stone-500"
         onPress={() => setModalVisible(true)}
       >
         <Text className="text-center text-white text-2xl w-auto mx-auto">
-          Sign up
+          Submit
         </Text>
       </Pressable>
     </View>
