@@ -1,17 +1,18 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
-
-const copy = `# h1 Heading 8-)
-
-**This is some bold text!**
-
-This is normal text
-`;
+import { getPrivacyPolicy } from "../utils/api";
 
 const PrivacyPolicy = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [policyBody, setPolicyBody] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      setPolicyBody(await getPrivacyPolicy());
+    })();
+  }, []);
 
   const handleAccept = () => {};
 
@@ -25,7 +26,7 @@ const PrivacyPolicy = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View className="w-[90%] mx-[5%] h-[60%] bg-[#d8bbff] absolute inset-x-0 bottom-0 rounded-t-xl p-2 ">
+        <View className="w-[90%] mx-[5%] h-[90%] bg-[#d8bbff] absolute inset-x-0 bottom-0 rounded-t-xl p-2 ">
           <View>
             <Pressable
               className="justify-self-end ml-[94%]"
@@ -38,9 +39,9 @@ const PrivacyPolicy = () => {
 
             <ScrollView
               contentInsetAdjustmentBehavior="scrollableAxes"
-              className="h-[75%] mx-3"
+              className="h-[80%] mx-3"
             >
-              <Markdown>{copy}</Markdown>
+              <Markdown>{policyBody}</Markdown>
             </ScrollView>
 
             <Pressable
