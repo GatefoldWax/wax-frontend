@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import ReviewHistory from "../../../components/ReviewHistory";
@@ -33,7 +35,17 @@ const CurrentUser = () => {
           Hello {user.username}!
         </Text>
 
-        <SignOutButton setUser={setUser} />
+        <View className="flex flex-row ">
+          <View className="my-auto">
+            <Ionicons
+              name="settings"
+              size={30}
+              color={"black"}
+              onPress={() => router.push("/(auth)/settings")}
+            />
+          </View>
+          <SignOutButton setUser={setUser} />
+        </View>
       </View>
 
       <View>
