@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#b56de4"
-      }
+      },
+      "package": "com.gatefoldwax.WaxReactNative"
     },
     "web": {
       "bundler": "metro",
