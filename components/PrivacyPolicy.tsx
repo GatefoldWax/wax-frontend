@@ -13,10 +13,13 @@ const PrivacyPolicy = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [policyBody, setPolicyBody] = useState("");
+  const [policyId, setPolicyId] = useState(0);
 
   useEffect(() => {
     (async () => {
-      setPolicyBody(await getPrivacyPolicy());
+      const { body, id } = await getPrivacyPolicy();
+      setPolicyBody(body);
+      setPolicyId(id);
     })();
   }, []);
 
@@ -49,7 +52,9 @@ const PrivacyPolicy = ({
             </ScrollView>
 
             <Pressable
-              onPress={() => signUpWithEmail() && setModalVisible(false)}
+              onPress={() =>
+                signUpWithEmail(policyId) && setModalVisible(false)
+              }
               disabled={loading}
               className="bg-[#ffffffc0] w-40 p-4 mt-3 rounded-md mx-auto"
             >

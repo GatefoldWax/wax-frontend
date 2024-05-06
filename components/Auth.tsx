@@ -39,7 +39,7 @@ export default function Auth() {
     }
   }
 
-  async function signUpWithEmail() {
+  async function signUpWithEmail(privacy_version: number) {
     setLoading(true);
     const { data } = await supabase
       .from("users")
@@ -77,7 +77,9 @@ export default function Auth() {
     }
 
     if (!error) {
-      await supabase.from("users").insert({ username: userName });
+      await supabase
+        .from("users")
+        .insert({ username: userName, privacy_version });
       setIsSingingUp(false);
       setLoading(false);
     }

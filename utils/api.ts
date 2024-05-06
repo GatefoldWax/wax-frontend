@@ -144,7 +144,7 @@ export const patchFollows = async (
 export const getPrivacyPolicy = async () => {
   try {
     const response: AxiosResponse = await api.get(`/privacy`);
-    return response.data.body;
+    return response.data;
   } catch (err) {
     console.log("🚀 ~ getFollows ~ err:", err);
   }
