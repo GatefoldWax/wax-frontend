@@ -1,22 +1,31 @@
-import { useState } from "react";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
-import { FormButton } from "./reusable-components/FormButton";
-import * as accountDeletion from "../constants/text/accountDeletion.json";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
+import { Alert, Modal, Pressable, ScrollView, Text, View } from "react-native";
+import * as accountDeletion from "../constants/text/accountDeletion.json";
+import { supabase } from "../lib/supabase";
+import { FormButton } from "./reusable-components/FormButton";
+import { PostgrestError } from "@supabase/supabase-js";
+import LoadingSpinner from "./reusable-components/LoadingSpinner";
 
 const AccountDeleteButton = () => {
-  const [disabled, setDisabled] = useState(false);
-
-  const handleDeleteAccount = async () => {
-    setDisabled(true);
-    // await supabase.rpc("delete_account")
-    setDisabled(false);
-    router.replace("/");
-  };
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  return (
+  const handleDeleteAccount = async () => {
+    setLoading(true);
+    const { error } = await supabase.rpc("delete_account");
+    if (error) {
+      Alert.alert(error.message);
+    } else {
+      router.replace("/");
+    }
+    setLoading(false);
+  };
+
+  return loading ? (
+    <LoadingSpinner size="small" isColour={true} />
+  ) : (
     <View className="p-4 mx-auto">
       <Text className="p-4 my-auto text-lg">{accountDeletion.notice}</Text>
 
@@ -51,7 +60,7 @@ const AccountDeleteButton = () => {
 
               <Pressable
                 onPress={handleDeleteAccount}
-                disabled={disabled}
+                disabled={loading}
                 className="bg-[#ffffffc0] w-40 p-4 mt-3 rounded-md mx-auto"
               >
                 <Text className="text-center">Accept and continue</Text>
@@ -62,7 +71,7 @@ const AccountDeleteButton = () => {
         <FormButton
           text="Delete Account"
           onPress={() => setModalVisible(!modalVisible)}
-          disabled={disabled}
+          disabled={loading}
         />
       </View>
     </View>

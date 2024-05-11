@@ -1,7 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
-import { Alert, Image, Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { Input } from "react-native-elements";
 import { UserContext } from "../contexts/UserContent";
 import { supabase } from "../lib/supabase";
@@ -75,10 +81,10 @@ export default function Auth() {
       setLoading(false);
     }
 
-    if (!error) {
+    if (session && !error) {
       await supabase
         .from("users")
-        .insert({ username: userName, privacy_version });
+        .insert({ username: userName, privacy_version, uuid: session.user.id });
       setIsSingingUp(false);
       setLoading(false);
     }
@@ -101,57 +107,57 @@ export default function Auth() {
     <View className="h-full">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <>
-        <View className="w-full h-1/4 justify-center items-center mt-14 mb-8">
-          <Image
-            source={require("../assets/images/icon.png")}
-            resizeMode="center"
-          />
-        </View>
-        <View className="mx-[2%]">
-          <Input
-            label="Email"
-            labelStyle={{ color: "black" }}
-            inputContainerStyle={{ borderColor: "black" }}
-            leftIcon={{ type: "font-awesome", name: "envelope" }}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            placeholder="email@address.com"
-            placeholderTextColor={"black"}
-            autoCapitalize={"none"}
-            keyboardType="email-address"
-          />
-        </View>
-
-        {isSigningUp && (
+          <View className="w-full h-1/4 justify-center items-center mt-14 mb-8">
+            <Image
+              source={require("../assets/images/icon.png")}
+              resizeMode="center"
+            />
+          </View>
           <View className="mx-[2%]">
             <Input
-              label="username"
+              label="Email"
               labelStyle={{ color: "black" }}
               inputContainerStyle={{ borderColor: "black" }}
-              leftIcon={{ type: "font-awesome", name: "user" }}
-              onChangeText={(text) => setUserName(text)}
-              value={userName}
-              placeholder="myName123"
+              leftIcon={{ type: "font-awesome", name: "envelope" }}
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              placeholder="email@address.com"
+              placeholderTextColor={"black"}
+              autoCapitalize={"none"}
+              keyboardType="email-address"
+            />
+          </View>
+
+          {isSigningUp && (
+            <View className="mx-[2%]">
+              <Input
+                label="username"
+                labelStyle={{ color: "black" }}
+                inputContainerStyle={{ borderColor: "black" }}
+                leftIcon={{ type: "font-awesome", name: "user" }}
+                onChangeText={(text) => setUserName(text)}
+                value={userName}
+                placeholder="myName123"
+                placeholderTextColor={"black"}
+                autoCapitalize={"none"}
+              />
+            </View>
+          )}
+
+          <View className="mx-[2%]">
+            <Input
+              inputContainerStyle={{ borderColor: "black" }}
+              label="Password"
+              labelStyle={{ color: "black" }}
+              leftIcon={{ type: "font-awesome", name: "lock" }}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              secureTextEntry={true}
+              placeholder="Password"
               placeholderTextColor={"black"}
               autoCapitalize={"none"}
             />
           </View>
-        )}
-
-        <View className="mx-[2%]">
-          <Input
-            inputContainerStyle={{ borderColor: "black" }}
-            label="Password"
-            labelStyle={{ color: "black" }}
-            leftIcon={{ type: "font-awesome", name: "lock" }}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            secureTextEntry={true}
-            placeholder="Password"
-            placeholderTextColor={"black"}
-            autoCapitalize={"none"}
-          />
-        </View>
         </>
       </TouchableWithoutFeedback>
 
