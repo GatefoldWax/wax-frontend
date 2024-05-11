@@ -1,14 +1,13 @@
-import React, { useContext, useState } from "react";
-import { Alert, View, Keyboard, Image } from "react-native";
-import { supabase } from "../lib/supabase";
-import { Input } from "react-native-elements";
-import { router } from "expo-router";
-import { FormButton } from "./reusable-components/FormButton";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { UserContext } from "../contexts/UserContent";
-import { getFollows } from "../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import React, { useContext, useState } from "react";
+import { Alert, Image, Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { Input } from "react-native-elements";
+import { UserContext } from "../contexts/UserContent";
+import { supabase } from "../lib/supabase";
+import { getFollows } from "../utils/api";
 import PrivacyPolicy from "./PrivacyPolicy";
+import { FormButton } from "./reusable-components/FormButton";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -101,6 +100,7 @@ export default function Auth() {
   return (
     <View className="h-full">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <>
         <View className="w-full h-1/4 justify-center items-center mt-14 mb-8">
           <Image
             source={require("../assets/images/icon.png")}
@@ -152,6 +152,7 @@ export default function Auth() {
             autoCapitalize={"none"}
           />
         </View>
+        </>
       </TouchableWithoutFeedback>
 
       {!isSigningUp && (
