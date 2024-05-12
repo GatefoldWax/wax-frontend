@@ -1,10 +1,10 @@
 import { router } from "expo-router";
-import { Pressable, View, Image, Text, ScrollView } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import RatingWheel from "./reusable-components/RatingWheel";
 
 const ReviewHistory = ({ activity }: { activity: any }) => {
   return (
-    <ScrollView className="max-h-[35vh] mx-4 bg-white rounded-lg">
+    <ScrollView className="h-[50vh] mx-4 bg-white rounded-lg">
       {activity.map(
         (trackReview: {
           music_id: string;

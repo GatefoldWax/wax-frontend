@@ -1,14 +1,17 @@
-import { Pressable, SafeAreaView, Text } from "react-native";
+import { SafeAreaView, ScrollView, Text } from "react-native";
 import AccountDeleteButton from "../../../components/AccountDeleteButton";
+import SignOutButton from "../../../components/reusable-components/SignOutButton";
 
 const SettingsPage = () => {
   return (
-    <SafeAreaView className="h-[100%]">
-      <Pressable>
-        <Text className="p-4 my-auto font-bold text-3xl text-center">
+    <SafeAreaView className="h-[100%] flex flex-col justify-between">
+      <ScrollView>
+        <Text className="p-4 mb-4 font-bold text-3xl text-center">
           Account Settings
         </Text>
-      </Pressable>
+
+        <SignOutButton />
+      </ScrollView>
 
       <AccountDeleteButton />
     </SafeAreaView>

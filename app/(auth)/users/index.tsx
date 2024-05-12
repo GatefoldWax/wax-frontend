@@ -1,17 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { Pressable, SafeAreaView, Text, View } from "react-native";
 import ReviewHistory from "../../../components/ReviewHistory";
 import UserList from "../../../components/UserList";
 import LoadingSpinner from "../../../components/reusable-components/LoadingSpinner";
-import SignOutButton from "../../../components/reusable-components/SignOutButton";
 import { UserContext } from "../../../contexts/UserContent";
 import { getReviewsByUsername } from "../../../utils/api";
 
 const CurrentUser = () => {
   const [loading, setLoading] = useState(true);
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
@@ -32,20 +31,17 @@ const CurrentUser = () => {
     <SafeAreaView className="h-[100%]">
       <View className="flex flex-row justify-between">
         <Text className="p-4 my-auto font-bold text-lg">
-          Hello {user.username}!
+          Hi {user.username}!
         </Text>
 
-        <View className="flex flex-row ">
-          <View className="my-auto">
+          <Pressable className="my-auto p-4">
             <Ionicons
               name="settings"
               size={30}
               color={"black"}
               onPress={() => router.push("/(auth)/settings")}
             />
-          </View>
-          <SignOutButton setUser={setUser} />
-        </View>
+        </Pressable>
       </View>
 
       <View>
