@@ -1,13 +1,19 @@
-import React, { useContext, useState } from "react";
-import { Alert, View, Keyboard, Image } from "react-native";
-import { supabase } from "../lib/supabase";
-import { Input } from "react-native-elements";
-import { router } from "expo-router";
-import { FormButton } from "./reusable-components/FormButton";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { UserContext } from "../contexts/UserContent";
-import { getFollows } from "../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import React, { useContext, useState } from "react";
+import {
+  Alert,
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { Input } from "react-native-elements";
+import { UserContext } from "../contexts/UserContent";
+import { supabase } from "../lib/supabase";
+import { getFollows } from "../utils/api";
+import PrivacyPolicy from "./PrivacyPolicy";
+import { FormButton } from "./reusable-components/FormButton";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -15,6 +21,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSigningUp, setIsSingingUp] = useState(false);
+
   const { setUser } = useContext(UserContext);
 
   async function signInWithEmail() {
@@ -37,12 +44,18 @@ export default function Auth() {
     }
   }
 
-  async function signUpWithEmail() {
+  async function signUpWithEmail(privacy_version: number) {
     setLoading(true);
     const { data } = await supabase
       .from("users")
       .select("username")
       .eq("username", userName);
+
+    if (userName === "" || email === "" || password === "") {
+      setLoading(false);
+      Alert.alert("Please fill in all fields");
+      return undefined;
+    }
 
     if (data?.length) {
       setLoading(false);
@@ -68,8 +81,10 @@ export default function Auth() {
       setLoading(false);
     }
 
-    if (!error) {
-      await supabase.from("users").insert({ username: userName });
+    if (session && !error) {
+      await supabase
+        .from("users")
+        .insert({ username: userName, privacy_version, uuid: session.user.id });
       setIsSingingUp(false);
       setLoading(false);
     }
@@ -91,56 +106,59 @@ export default function Auth() {
   return (
     <View className="h-full">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View className="w-full h-1/4 justify-center items-center mt-14 mb-8">
-          <Image
-            source={require("../assets/images/icon.png")}
-            resizeMode="center"
-          />
-        </View>
-        <View className="mx-[2%]">
-          <Input
-            label="Email"
-            labelStyle={{ color: "black" }}
-            inputContainerStyle={{ borderColor: "black" }}
-            leftIcon={{ type: "font-awesome", name: "envelope" }}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            placeholder="email@address.com"
-            placeholderTextColor={"black"}
-            autoCapitalize={"none"}
-          />
-        </View>
-
-        {isSigningUp && (
+        <>
+          <View className="w-full h-1/4 justify-center items-center mt-14 mb-8">
+            <Image
+              source={require("../assets/images/icon.png")}
+              resizeMode="center"
+            />
+          </View>
           <View className="mx-[2%]">
             <Input
-              label="username"
+              label="Email"
               labelStyle={{ color: "black" }}
               inputContainerStyle={{ borderColor: "black" }}
-              leftIcon={{ type: "font-awesome", name: "user" }}
-              onChangeText={(text) => setUserName(text)}
-              value={userName}
-              placeholder="myName123"
+              leftIcon={{ type: "font-awesome", name: "envelope" }}
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              placeholder="email@address.com"
+              placeholderTextColor={"black"}
+              autoCapitalize={"none"}
+              keyboardType="email-address"
+            />
+          </View>
+
+          {isSigningUp && (
+            <View className="mx-[2%]">
+              <Input
+                label="username"
+                labelStyle={{ color: "black" }}
+                inputContainerStyle={{ borderColor: "black" }}
+                leftIcon={{ type: "font-awesome", name: "user" }}
+                onChangeText={(text) => setUserName(text)}
+                value={userName}
+                placeholder="myName123"
+                placeholderTextColor={"black"}
+                autoCapitalize={"none"}
+              />
+            </View>
+          )}
+
+          <View className="mx-[2%]">
+            <Input
+              inputContainerStyle={{ borderColor: "black" }}
+              label="Password"
+              labelStyle={{ color: "black" }}
+              leftIcon={{ type: "font-awesome", name: "lock" }}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              secureTextEntry={true}
+              placeholder="Password"
               placeholderTextColor={"black"}
               autoCapitalize={"none"}
             />
           </View>
-        )}
-
-        <View className="mx-[2%]">
-          <Input
-            inputContainerStyle={{ borderColor: "black" }}
-            label="Password"
-            labelStyle={{ color: "black" }}
-            leftIcon={{ type: "font-awesome", name: "lock" }}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            secureTextEntry={true}
-            placeholder="Password"
-            placeholderTextColor={"black"}
-            autoCapitalize={"none"}
-          />
-        </View>
+        </>
       </TouchableWithoutFeedback>
 
       {!isSigningUp && (
@@ -175,13 +193,7 @@ export default function Auth() {
 
       {isSigningUp && (
         <>
-          <View className="m-auto mt-4">
-            <FormButton
-              text="Sign up"
-              disabled={loading}
-              onPress={() => signUpWithEmail()}
-            />
-          </View>
+          <PrivacyPolicy loading={loading} signUpWithEmail={signUpWithEmail} />
 
           <View className="m-auto mt-4">
             <FormButton

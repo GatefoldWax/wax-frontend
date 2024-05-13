@@ -24,7 +24,7 @@ export const getMusic = async (
         headers: { Authorization: `Bearer ${await refreshSession()}` },
       }
     );
-   
+
     return response.data.music;
   } catch (err) {
     console.log("🚀 ~ file: api.ts:11 ~ getMusic ~ err:", err);
@@ -37,7 +37,7 @@ export const getReviews = async (music_id?: string, username?: string) => {
       `/reviews/${music_id}/${username}`,
       { headers: { Authorization: `Bearer ${await refreshSession()}` } }
     );
-    
+
     return response.data.reviews;
   } catch (err) {
     console.log("🚀 ~ file: api.ts:24 ~ getReviews ~ err:", err);
@@ -46,10 +46,9 @@ export const getReviews = async (music_id?: string, username?: string) => {
 
 export const getReviewsByUsername = async (username?: string) => {
   try {
-    const response: AxiosResponse = await api.get(
-      `/reviews/${username}`,
-      { headers: { Authorization: `Bearer ${await refreshSession()}` } }
-    );
+    const response: AxiosResponse = await api.get(`/reviews/${username}`, {
+      headers: { Authorization: `Bearer ${await refreshSession()}` },
+    });
 
     return response.data.reviews;
   } catch (err) {
@@ -91,7 +90,7 @@ export const getSpotifyTrackList = async (music_id: string) => {
   try {
     const response: AxiosResponse = await api.get(
       `/search/${music_id}/tracks`,
-   
+
       { headers: { Authorization: `Bearer ${await refreshSession()}` } }
     );
     return response.data.tracks;
@@ -115,7 +114,7 @@ export const getFollows = async (username: string) => {
   if (!username) throw new Error("username is required");
   try {
     const response: AxiosResponse = await api.get(`/users/${username}`, {
-      headers: { Authorization: `Bearer ${ await refreshSession()}` },
+      headers: { Authorization: `Bearer ${await refreshSession()}` },
     });
     return response.data;
   } catch (err) {
@@ -139,5 +138,14 @@ export const patchFollows = async (
     );
   } catch (err) {
     console.log("🚀 ~ patchFollows ~ err:", err);
+  }
+};
+
+export const getPrivacyPolicy = async () => {
+  try {
+    const response: AxiosResponse = await api.get(`/privacy`);
+    return response.data;
+  } catch (err) {
+    console.log("🚀 ~ getFollows ~ err:", err);
   }
 };

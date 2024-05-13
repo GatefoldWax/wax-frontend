@@ -17,7 +17,7 @@ const MusicListItem = ({ track }: { track: Music }) => {
           source={{ uri: track.album_img }}
           className="w-40 h-40   rounded-lg"
         />
-        <Text className="text-center py-1 mt-2">{track.artist_names}</Text>
+        <Text className="text-center py-1 mt-2">{track.artist_names[0]}</Text>
         <Text className="text-center">{track.name}</Text>
       </View>
     </Pressable>

@@ -1,6 +1,6 @@
 import { router, useGlobalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { RefreshControl, ScrollView } from "react-native";
+import { RefreshControl, ScrollView, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MusicHeader from "../../../components/MusicHeader";
 import MusicList from "../../../components/MusicList";
@@ -67,6 +67,8 @@ const HomePage = () => {
 
   return (
     <SafeAreaView className="h-[100%]">
+      <StatusBar backgroundColor={"#B56DE4"} barStyle={"dark-content"} />
+
       <MusicHeader
         setDropdownVis={setDropdownVis}
         setSearchText={setSearchText}
