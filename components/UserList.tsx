@@ -16,7 +16,7 @@ const UserList = ({
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchBoxVisibility, setSearchBoxVisibility] =
     useState<boolean>(false);
-  const [iconColour,setIconColour]= useState<string>('black')
+  const [iconColour, setIconColour] = useState<string>("black");
 
   const getSearchResults = async (query: string) => {
     return await searchUsers(query);
@@ -29,8 +29,12 @@ const UserList = ({
       //* will log an array of usernames that match the query
 
       try {
-        const results = await getSearchResults(searchInput);
-        setSearchResults(results);
+        if (searchInput.length) {
+          const results = await getSearchResults(searchInput);
+          setSearchResults(results.users);
+        } else {
+          setSearchResults([]);
+        }
       } catch (error) {
         console.log("🚀 ~ getSearchResults ~ error:", error);
       }
@@ -49,13 +53,8 @@ const UserList = ({
             placeholderTextColor="#0008"
             value={searchInput}
             onChangeText={(e) => {
-              if (e.length) {
-                setSearchInput(e);
-                setSearching(true);
-              } else if (!e.length) {
-                setSearchInput(e);
-                setSearching(false);
-              }
+              setSearchInput(e);
+              setSearching((current: boolean) => !current);
             }}
           />
         ) : (
@@ -67,7 +66,7 @@ const UserList = ({
           className="ml-auto mr-6"
           onPress={() => {
             setSearchBoxVisibility((current: boolean) => !current);
-            setIconColour(searchBoxVisibility?'#B56DE4':'black')
+            setIconColour(searchBoxVisibility ? "black" : "#B56DE4");
           }}
         >
           <Ionicons name="search-outline" size={30} color={iconColour} />
@@ -75,9 +74,13 @@ const UserList = ({
       </View>
 
       <ScrollView className="px-4 mb-4 mx-4 bg-white rounded-lg">
-        {connections.map((user) => (
-          <UserItem key={user} username={user} textModifier="text-lg" />
-        ))}
+        {!searchResults.length || !searchBoxVisibility
+          ? connections.map((user) => (
+              <UserItem key={user} username={user} textModifier="text-lg" />
+            ))
+          : searchResults.map((user) => (
+              <UserItem key={user} username={user} textModifier="text-lg" />
+            ))}
       </ScrollView>
     </>
   );
