@@ -1,5 +1,7 @@
 import { ScrollView, Text } from "react-native";
 import UserItem from "./UserItem";
+import { searchUsers } from "../utils/api";
+import { useEffect, useState } from "react";
 
 const UserList = ({
   connections,
@@ -8,6 +10,21 @@ const UserList = ({
   connections: string[];
   username?: string;
 }) => {
+  const [searching, setSearching] = useState<boolean>(false);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+
+  const getSearchResults = async (query: string) => {
+    return await searchUsers(query);
+  };
+
+  useEffect(() => {
+    (async () => {
+      //* HACK: demo of functionality of getSearchResults
+      console.log((await getSearchResults("ar")).users);
+      //* will log an array of usernames that match the query
+    })();
+  }, [searching]);
+
   return (
     <>
       <Text className="p-4 font-bold text-lg">
