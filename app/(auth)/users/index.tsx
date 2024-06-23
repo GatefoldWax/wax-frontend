@@ -1,7 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { Pressable, SafeAreaView, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+} from "react-native";
 import ReviewHistory from "../../../components/ReviewHistory";
 import UserList from "../../../components/UserList";
 import LoadingSpinner from "../../../components/reusable-components/LoadingSpinner";
@@ -10,8 +16,10 @@ import { getReviewsByUsername } from "../../../utils/api";
 
 const CurrentUser = () => {
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(UserContext);
   const [activity, setActivity] = useState([]);
+  const [keyboardVisibility, setKeyboardVisibility] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -28,19 +36,24 @@ const CurrentUser = () => {
   return loading ? (
     <LoadingSpinner size="large" isColour={true} />
   ) : (
-    <SafeAreaView className="h-[100%]">
+    // <SafeAreaView className="h-[100%]">
+    <KeyboardAvoidingView
+      className="h-[200%]"
+      behavior="position"
+      enabled={keyboardVisibility}
+    >
       <View className="flex flex-row justify-between">
         <Text className="p-4 my-auto font-bold text-lg">
           Hi {user.username}!
         </Text>
 
-          <Pressable className="my-auto p-4">
-            <Ionicons
-              name="settings"
-              size={30}
-              color={"black"}
-              onPress={() => router.push("/(auth)/settings")}
-            />
+        <Pressable className="my-auto p-4">
+          <Ionicons
+            name="settings"
+            size={30}
+            color={"black"}
+            onPress={() => router.push("/(auth)/settings")}
+          />
         </Pressable>
       </View>
 
@@ -51,8 +64,12 @@ const CurrentUser = () => {
         <ReviewHistory activity={activity} />
       </View>
 
-      <UserList connections={user.following} />
-    </SafeAreaView>
+      <UserList
+        connections={user.following}
+        setKeyboardVisibility={setKeyboardVisibility}
+      />
+    </KeyboardAvoidingView>
+    // </SafeAreaView>
   );
 };
 
