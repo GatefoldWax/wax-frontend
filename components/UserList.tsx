@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { searchUsers } from "../utils/api";
 import UserItem from "./UserItem";
-import { router } from "expo-router";
 
 const UserList = ({
   connections,
@@ -24,6 +23,8 @@ const UserList = ({
   const getSearchResults = async (query: string) => {
     return await searchUsers(query);
   };
+
+  const isCurrentUserPage = username === undefined
 
   useEffect(() => {
     (async () => {
@@ -67,23 +68,25 @@ const UserList = ({
             {followingHeaderText}
           </Text>
         )}
-        <Pressable
-          className="ml-auto mr-6"
-          onPress={() => {
-            setSearchBoxVisibility((current: boolean) => !current);
-            setKeyboardVisibility && setKeyboardVisibility(false);
-            setIconColour(searchBoxVisibility ? "black" : "#B56DE4");
-          }}
-        >
-          <Ionicons
-            name={searchBoxVisibility ? "close" : "search-outline"}
-            size={30}
-            color={iconColour}
-          />
-        </Pressable>
+        {isCurrentUserPage && (
+          <Pressable
+            className="ml-auto mr-6"
+            onPress={() => {
+              setSearchBoxVisibility((current: boolean) => !current);
+              setKeyboardVisibility && setKeyboardVisibility(false);
+              setIconColour(searchBoxVisibility ? "black" : "#B56DE4");
+            }}
+          >
+            <Ionicons
+              name={searchBoxVisibility ? "close" : "search-outline"}
+              size={30}
+              color={iconColour}
+            />
+          </Pressable>
+        )}
       </View>
 
-      <ScrollView className="px-4 mb-4 mx-4 bg-white rounded-lg">
+      <ScrollView className="h-[20vh] px-4 mb-4 mx-4 bg-white rounded-lg">
         {searchBoxVisibility === false
           ? connections.map((user) => (
               <UserItem
@@ -93,18 +96,14 @@ const UserList = ({
               />
             ))
           : searchResults.map((user) => (
-              <Pressable
-                onTouchStart={() => {
-                  setKeyboardVisibility && setKeyboardVisibility(false);
-                  router.push(`/(auth)/users/${user}`);
-                }}
-              >
-                <UserItem
-                  key={`searchedUsers.${user}`}
-                  username={user}
-                  textModifier="text-lg"
-                />
-              </Pressable>
+              <UserItem
+                key={`searchedUsers.${user}`}
+                username={user}
+                textModifier="text-lg"
+                pressModifier={() =>
+                  setKeyboardVisibility && setKeyboardVisibility(false)
+                }
+              />
             ))}
       </ScrollView>
     </>
