@@ -24,7 +24,7 @@ const UserList = ({
     return await searchUsers(query);
   };
 
-  const isCurrentUserPage = username === undefined
+  const isCurrentUserPage = username === undefined;
 
   useEffect(() => {
     (async () => {
@@ -86,7 +86,12 @@ const UserList = ({
         )}
       </View>
 
-      <ScrollView className="h-[20vh] px-4 mb-4 mx-4 bg-white rounded-lg">
+      <ScrollView
+        className="h-[20vh] px-4 mb-4 mx-4 bg-white rounded-lg"
+        onTouchStart={() =>
+          setKeyboardVisibility && setKeyboardVisibility(false)
+        }
+      >
         {searchBoxVisibility === false
           ? connections.map((user) => (
               <UserItem
@@ -100,9 +105,6 @@ const UserList = ({
                 key={`searchedUsers.${user}`}
                 username={user}
                 textModifier="text-lg"
-                pressModifier={() =>
-                  setKeyboardVisibility && setKeyboardVisibility(false)
-                }
               />
             ))}
       </ScrollView>

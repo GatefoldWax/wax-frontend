@@ -6,19 +6,15 @@ import { UserContext } from "../contexts/UserContent";
 const UserItem = ({
   username,
   textModifier,
-  pressModifier,
 }: {
   username: string;
   textModifier?: string;
-  pressModifier?: () => void;
 }) => {
   const { user } = useContext(UserContext);
 
   return (
     <Pressable
       onPress={() => {
-        pressModifier && pressModifier();
-
         router.push(
           `/(auth)/users/${username == user.username ? `` : username}`
         );
