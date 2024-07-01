@@ -113,7 +113,7 @@ export const deleteReview = async (review_id: number) => {
 export const getFollows = async (username: string) => {
   if (!username) throw new Error("username is required");
   try {
-    const response: AxiosResponse = await api.get(`/users/${username}`, {
+    const response: AxiosResponse = await api.get(`/users/${username}/followers`, {
       headers: { Authorization: `Bearer ${await refreshSession()}` },
     });
     return response.data;
@@ -129,7 +129,7 @@ export const patchFollows = async (
 ) => {
   try {
     await api.patch(
-      `/users/${loggedInUser}`,
+      `/users/${loggedInUser}/followers`,
       {
         new_follow: newFollow,
         follow_request: followRequest,
@@ -138,6 +138,17 @@ export const patchFollows = async (
     );
   } catch (err) {
     console.log("🚀 ~ patchFollows ~ err:", err);
+  }
+};
+
+export const searchUsers = async (q: string) => {
+  try {
+    const response: AxiosResponse = await api.get(`/users/${q}`, {
+      headers: { Authorization: `Bearer ${await refreshSession()}` },
+    });
+    return response.data;
+  } catch (err) {
+    console.log("🚀 ~ searchUsers ~ err:", err);
   }
 };
 

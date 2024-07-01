@@ -45,6 +45,7 @@ const UserPage = () => {
       try {
         const { following } = await getFollows(username);
         const userReviews = await getReviewsByUsername(username);
+
         setConnections(following);
         setActivity(userReviews);
         setLoading(false);

@@ -46,16 +46,23 @@ export default function Auth() {
 
   async function signUpWithEmail(privacy_version: number) {
     setLoading(true);
-    const { data } = await supabase
-      .from("users")
-      .select("username")
-      .eq("username", userName);
 
     if (userName === "" || email === "" || password === "") {
       setLoading(false);
       Alert.alert("Please fill in all fields");
       return undefined;
     }
+
+    if (/^[a-z0-9_]*$/.test(userName)) {
+      setLoading(false);
+      Alert.alert("Usernames may only consist of lower case letters, numbers, and underscores");
+      return undefined;
+    }
+
+    const { data } = await supabase
+      .from("users")
+      .select("username")
+      .eq("username", userName.toLowerCase());
 
     if (data?.length) {
       setLoading(false);
@@ -69,7 +76,7 @@ export default function Auth() {
     } = await supabase.auth.signUp({
       email: email,
       password: password,
-      options: { data: { username: userName } },
+      options: { data: { username: userName.toLowerCase() } },
     });
 
     if (error) {
@@ -82,9 +89,11 @@ export default function Auth() {
     }
 
     if (session && !error) {
-      await supabase
-        .from("users")
-        .insert({ username: userName, privacy_version, uuid: session.user.id });
+      await supabase.from("users").insert({
+        username: userName.toLowerCase(),
+        privacy_version,
+        uuid: session.user.id,
+      });
       setIsSingingUp(false);
       setLoading(false);
     }

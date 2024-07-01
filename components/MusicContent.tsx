@@ -1,11 +1,10 @@
-import { Text, View, Image, Pressable } from "react-native";
+import { Text, View, Image, Pressable, ScrollView} from "react-native";
 import { Music, Track } from "../types/front-end";
 import React, { useEffect, useState } from "react";
 import { useGlobalSearchParams } from "expo-router";
 import { getMusic, getSpotifyTrackList } from "../utils/api";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
 import { router } from "expo-router";
 import LoadingSpinner from "./reusable-components/LoadingSpinner";
 
@@ -86,6 +85,8 @@ const MusicContent = ({
     router.push({ pathname: `/(auth)/music`, params: { artistName } });
   };
 
+
+
   return loading ? (
     <LoadingSpinner size="large" isColour={true} />
   ) : (
@@ -112,18 +113,22 @@ const MusicContent = ({
       </View>
 
       {isAlbumFlipped ? (
-        <ScrollView className="h-[350] w-[350] bg-slate-500 p-2 rounded-md album-cover">
+   
+        <ScrollView className="h-[350] w-[350] bg-slate-200 p-2 rounded-md album-cover">
+          
           {tracks && tracks?.length
             ? tracks.map((track) => {
                 return (
                   <Text
                     key={track.id}
-                    className="py-2 text-white"
+                    className="py-2 text-black"
                   >{`${track.track_number}: ${track.name}`}</Text>
                 );
               })
             : null}
+         
         </ScrollView>
+    
       ) : (
         <Image
           source={{ uri: musicContent?.album_img }}
@@ -149,7 +154,8 @@ const MusicContent = ({
             {isPlaying && <Ionicons name="pause" size={40} color={"black"} />}
           </Pressable>
         )}
-        {tracks.length ? (
+        {
+        tracks.length ? (
           <Pressable
             onPress={() => {
               setIsAlbumFlipped(!isAlbumFlipped);
