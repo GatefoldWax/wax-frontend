@@ -1,13 +1,11 @@
-import { useEffect, useState, useContext } from "react";
-import { Text, View } from "react-native";
-import { getReviews } from "../utils/api";
 import { router, useGlobalSearchParams } from "expo-router";
-import { Review } from "../types/front-end";
-import ReviewModal from "./ReviewModal";
+import { useContext, useEffect, useState } from "react";
+import { Text, View } from "react-native";
 import { UserContext } from "../contexts/UserContent";
-
+import { Review } from "../types/front-end";
+import { getReviews } from "../utils/api";
+import ReviewModal from "./ReviewModal";
 import ReviewItem from "./ReviewItem";
-import SignOutButton from "./reusable-components/SignOutButton";
 import { FormButton } from "./reusable-components/FormButton";
 
 export const Reviews = () => {
