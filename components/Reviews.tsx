@@ -1,12 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import { Text, View } from "react-native";
 import { getReviews } from "../utils/api";
-import { useGlobalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import { Review } from "../types/front-end";
 import ReviewModal from "./ReviewModal";
 import { UserContext } from "../contexts/UserContent";
 
 import ReviewItem from "./ReviewItem";
+import SignOutButton from "./reusable-components/SignOutButton";
+import { FormButton } from "./reusable-components/FormButton";
 
 export const Reviews = () => {
   const { music_id } = useGlobalSearchParams();
@@ -18,6 +20,7 @@ export const Reviews = () => {
   const [isReviewable, setIsReviewable] = useState(false);
 
   useEffect(() => {
+    console.log(user.username);
     (async () => {
       const reviewData = await getReviews(
         music_id as string,
@@ -37,11 +40,19 @@ export const Reviews = () => {
             setIsReviewable={setIsReviewable}
           />
         </View>
-      ) : (
+      ) : user.username !== "" ? (
         <ReviewModal
           setReviews={setReviews}
           setIsReviewable={setIsReviewable}
         />
+      ) : (
+        <View className="mx-auto my-2">
+          <FormButton
+            text="Sign in to review"
+            onPress={() => router.push("/")}
+            disabled={false}
+          />
+        </View>
       )}
       <View className="bg-[#faf6ff]">
         <Text className="mt-2 text-center font-bold text-lg">REVIEWS</Text>
