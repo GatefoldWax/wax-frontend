@@ -53,7 +53,7 @@ export default function Auth() {
       return undefined;
     }
 
-    if (/^[a-z0-9_]*$/.test(userName)) {
+    if (/^[^a-z0-9_]*$/.test(userName)) {
       setLoading(false);
       Alert.alert("Usernames - lower-case, numbers, and underscores only");
       return undefined;
