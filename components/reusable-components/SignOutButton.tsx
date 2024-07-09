@@ -13,9 +13,9 @@ const SignOutButton = () => {
         router.replace(`/`);
         user.username !== "" && (await signOutUser(setUser));
       }}
-      className="bg-black w-auto min-w-[30%] p-2 mx-8 flex-row rounded-xl border-x border-b border-stone-500"
+      className="bg-black w-auto py-2 px-3 mx-6 flex-row rounded-xl border-x border-b border-stone-500"
     >
-      <Text className="text-white text-2xl w-auto mx-auto">
+      <Text className="text-white text-xl w-auto mx-auto">
         {user.username !== "" ? "Sign Out" : "Sign In"}
       </Text>
     </Pressable>
