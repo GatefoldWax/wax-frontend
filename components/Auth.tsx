@@ -55,7 +55,7 @@ export default function Auth() {
 
     if (/^[a-z0-9_]*$/.test(userName)) {
       setLoading(false);
-      Alert.alert("Usernames may only consist of lower case letters, numbers, and underscores");
+      Alert.alert("Usernames - lower-case, numbers, and underscores only");
       return undefined;
     }
 
@@ -146,7 +146,7 @@ export default function Auth() {
                 leftIcon={{ type: "font-awesome", name: "user" }}
                 onChangeText={(text) => setUserName(text)}
                 value={userName}
-                placeholder="myName123"
+                placeholder="myname_123"
                 placeholderTextColor={"black"}
                 autoCapitalize={"none"}
               />
