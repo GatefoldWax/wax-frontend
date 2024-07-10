@@ -2,7 +2,7 @@
   "expo": {
     "name": "Wax",
     "slug": "Wax-React-Native",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -25,7 +25,7 @@
         "backgroundColor": "#b56de4"
       },
       "package": "com.gatefoldwax.WaxReactNative",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",
