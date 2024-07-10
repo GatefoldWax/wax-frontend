@@ -44,7 +44,7 @@ export default function Auth() {
     }
   }
 
-  const validateSignUp = (): boolean => {
+  const validateSignUp = async (): Promise<boolean> => {
     if (userName === "" || email === "" || password === "") {
       Alert.alert("Please fill in all fields");
       return false;
@@ -77,19 +77,17 @@ export default function Auth() {
       return false;
     }
 
-    (async () => {
-      const { data } = await supabase
-        .from("users")
-        .select("username")
-        .eq("username", userName.toLowerCase());
+    const { data } = await supabase
+      .from("users")
+      .select("username")
+      .eq("username", userName.toLowerCase());
 
-      if (data?.length) {
-        Alert.alert("Username already exists");
-        return false;
-      }
+    if (data?.length) {
+      Alert.alert("Username already exists");
+      return false;
+    }
 
-      return true;
-    })();
+    return true;
   };
 
   async function signUpWithEmail(privacy_version: number) {

@@ -9,7 +9,7 @@ const PrivacyPolicy = ({
   loading,
   signUpWithEmail,
 }: {
-  validator: () => boolean;
+  validator: () => Promise<boolean>;
   loading: boolean;
   signUpWithEmail: Function;
 }) => {
@@ -67,7 +67,7 @@ const PrivacyPolicy = ({
       </Modal>
       <Pressable
         className="bg-black mx-auto my-8 py-2 px-6 rounded-xl border-x border-b border-stone-500"
-        onPress={() => validator() && setModalVisible(true)}
+        onPress={ async () => await validator() && setModalVisible(true)}
       >
         <Text className="text-center text-white text-2xl w-auto mx-auto">
           Submit
