@@ -35,7 +35,7 @@ export default function Auth() {
       Alert.alert(error.message);
       setLoading(false);
     } else {
-      const username = data.user.user_metadata.username;
+      const username = data.user.user_metadata.username.toLowerCase();
       const { following } = await getFollows(username as string);
       setUser({ username, following });
       AsyncStorage.setItem("username", username as string);
@@ -44,20 +44,56 @@ export default function Auth() {
     }
   }
 
+  const validateSignUp = (): boolean => {
+    if (userName === "" || email === "" || password === "") {
+      Alert.alert("Please fill in all fields");
+      return false;
+    }
+
+    const emailPatternRegEx =
+      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+    if (emailPatternRegEx.test(email) === false) {
+      Alert.alert("Please enter a valid email address");
+      return false;
+    }
+
+    if (
+      userName.length < 4 ||
+      userName.length > 50 ||
+      /^[^a-z0-9_]|[^a-z0-9_]$/.test(userName)
+    ) {
+      Alert.alert(
+        "Username Error",
+        "Usernames can only contain lower-case, numbers, and underscores. \n\n(between 4 and 50 characters)"
+      );
+      return false;
+    }
+
+    if (!/^.{6,50}$/.test(password)) {
+      Alert.alert(
+        "Password Error",
+        "Passwords must be between 6 and 50 characters"
+      );
+      return false;
+    }
+
+    (async () => {
+      const { data } = await supabase
+        .from("users")
+        .select("username")
+        .eq("username", userName.toLowerCase());
+
+      if (data?.length) {
+        Alert.alert("Username already exists");
+        return false;
+      }
+
+      return true;
+    })();
+  };
+
   async function signUpWithEmail(privacy_version: number) {
     setLoading(true);
-
-    if (userName === "" || email === "" || password === "") {
-      setLoading(false);
-      Alert.alert("Please fill in all fields");
-      return undefined;
-    }
-
-    if (/^[^a-z0-9_]*$/.test(userName)) {
-      setLoading(false);
-      Alert.alert("Usernames - lower-case, numbers, and underscores only");
-      return undefined;
-    }
 
     const { data } = await supabase
       .from("users")
@@ -149,6 +185,9 @@ export default function Auth() {
                 placeholder="myname_123"
                 placeholderTextColor={"black"}
                 autoCapitalize={"none"}
+                passwordRules={
+                  "required: upper; required: lower; required: digit;"
+                }
               />
             </View>
           )}
@@ -202,7 +241,11 @@ export default function Auth() {
 
       {isSigningUp && (
         <>
-          <PrivacyPolicy loading={loading} signUpWithEmail={signUpWithEmail} />
+          <PrivacyPolicy
+            validator={validateSignUp}
+            loading={loading}
+            signUpWithEmail={signUpWithEmail}
+          />
 
           <View className="m-auto mt-4">
             <FormButton
